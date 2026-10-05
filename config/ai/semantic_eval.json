@@ -1,0 +1,14 @@
+{
+  "_comment": "Representative test queries for semantic image search on the demo AOI (Navi Mumbai: airport construction site, tidal creeks, mangroves, villages). 'expect' says what a relevant chip should show, judged visually. 'proxy' (water / vegetation) enables the automatic spectral-index agreement check in lumon/imagery/semantic_eval.py. Includes queries for things that are NOT in the AOI (negative controls): they still get ranked results, which is the point.",
+  "queries": [
+    {"query": "airport runway", "expect": "the Navi Mumbai airport runway or terminal (built 2021-2025)", "proxy": null},
+    {"query": "river", "expect": "creek or open water", "proxy": "water"},
+    {"query": "water body", "expect": "creek or open water", "proxy": "water"},
+    {"query": "dense green vegetation", "expect": "mangrove or other dense green vegetation", "proxy": "vegetation"},
+    {"query": "green vegetation farmland", "expect": "green fields or vegetation", "proxy": "vegetation"},
+    {"query": "bare soil construction site", "expect": "cleared land, earthworks, fill", "proxy": null},
+    {"query": "dense residential buildings", "expect": "villages / housing (small at 10 m)", "proxy": null},
+    {"query": "snow covered mountains", "expect": "NEGATIVE CONTROL: not present in the AOI", "proxy": null},
+    {"query": "ships in a harbour", "expect": "NEGATIVE CONTROL: no harbour in the AOI; ships are below 10 m resolution", "proxy": null}
+  ]
+}

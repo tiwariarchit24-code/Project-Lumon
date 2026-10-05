@@ -1,0 +1,66 @@
+{
+  "_comment": "Map layer registry. kind: boundary (staged boundary file), reference (source-built GeoJSON file), events / entities (database records filtered by type), imagery / analysis (satellite archive), planned (not implemented yet - shown honestly as unavailable). 'color' is a hint for the map style.",
+  "groups": ["REFERENCE", "EARTH OBSERVATION", "AVIATION", "MARITIME", "WEATHER", "DISASTERS", "ENVIRONMENT", "INFRASTRUCTURE", "SPACE", "CONNECTIVITY", "PUBLIC EVENTS", "ANALYSIS"],
+  "layers": [
+    {"id": "india-boundary", "name": "India boundary", "group": "REFERENCE", "kind": "boundary", "dataset": "india-land", "color": "#9fb4c8", "enabled": true, "description": "Country polygon, Natural Earth (India point of view)."},
+    {"id": "coastal-boundary", "name": "Maritime boundary (EEZ)", "group": "REFERENCE", "kind": "boundary", "dataset": "india-eez", "color": "#3f7fa8", "enabled": true, "description": "200 NM Exclusive Economic Zone, Marine Regions."},
+    {"id": "states", "name": "States / UTs", "group": "REFERENCE", "kind": "boundary", "dataset": "india-states", "color": "#5d6f82", "enabled": true, "description": "State and union territory boundaries, geoBoundaries / DataMeet."},
+    {"id": "districts", "name": "Districts", "group": "REFERENCE", "kind": "boundary", "dataset": "india-districts", "color": "#3b4754", "enabled": false, "description": "District boundaries (2021), geoBoundaries."},
+    {"id": "cities", "name": "Major cities", "group": "REFERENCE", "kind": "boundary", "dataset": "india-places", "color": "#c9d3dd", "enabled": true, "description": "Populated places, Natural Earth."},
+    {"id": "rivers", "name": "Rivers", "group": "REFERENCE", "kind": "reference", "source_id": "natural-earth-rivers", "color": "#2f6f9f", "enabled": true, "description": "Major rivers, Natural Earth 1:10m (generalised)."},
+    {"id": "pilot-nit-raipur", "name": "NIT Raipur study area", "group": "REFERENCE", "kind": "pilot", "pilot": "nit-raipur", "color": "#c8c2e8", "enabled": true, "description": "NIT Raipur pilot study area. PROVISIONAL (search area around Raipur's gazetteer point) until a verified campus boundary is supplied."},
+    {"id": "lakes", "name": "Lakes / reservoirs", "group": "REFERENCE", "kind": "reference", "source_id": "natural-earth-lakes", "color": "#2f6f9f", "enabled": false, "description": "Major lakes and reservoirs, Natural Earth 1:10m."},
+
+    {"id": "aoi-footprints", "name": "Imagery AOIs", "group": "EARTH OBSERVATION", "kind": "imagery", "color": "#d2a24c", "enabled": true, "description": "Areas of interest with staged Sentinel-2 observations."},
+    {"id": "sentinel-2", "name": "Sentinel-2 true colour (AOI)", "group": "EARTH OBSERVATION", "kind": "imagery", "color": "#d2a24c", "enabled": true, "description": "Staged Sentinel-2 Level-2A image over each AOI (latest usable scene, or the date chosen in the Imagery drawer)."},
+    {"id": "sentinel-1", "name": "Sentinel-1 SAR", "group": "EARTH OBSERVATION", "kind": "planned", "description": "Radar imagery. Not staged in this build."},
+    {"id": "landsat", "name": "Landsat", "group": "EARTH OBSERVATION", "kind": "planned", "description": "Not staged in this build."},
+
+    {"id": "aircraft", "name": "Aircraft", "group": "AVIATION", "kind": "events", "types": ["aircraft-position"], "color": "#7fc8e8", "enabled": false, "description": "Latest ADS-B positions from OpenSky (incomplete coverage)."},
+    {"id": "airports", "name": "Airports", "group": "AVIATION", "kind": "entities", "types": ["airport"], "color": "#a8b8c8", "enabled": false, "description": "Airports in India, OurAirports."},
+    {"id": "flight-activity", "name": "Flight activity", "group": "AVIATION", "kind": "planned", "description": "Track history and density. Not implemented."},
+    {"id": "aviation-alerts", "name": "Aviation alerts / NOTAM", "group": "AVIATION", "kind": "planned", "description": "No openly licensed NOTAM feed integrated yet."},
+
+    {"id": "vessels", "name": "Vessels (AIS)", "group": "MARITIME", "kind": "planned", "description": "Requires an aisstream.io key and a streaming client. Not implemented."},
+    {"id": "ports", "name": "Ports", "group": "MARITIME", "kind": "entities", "types": ["port"], "color": "#5fa8d3", "enabled": false, "description": "Major ports, Natural Earth."},
+    {"id": "maritime-events", "name": "Maritime events", "group": "MARITIME", "kind": "planned", "description": "Not implemented."},
+
+    {"id": "weather-current", "name": "Current weather (cities)", "group": "WEATHER", "kind": "events", "types": ["weather-current"], "color": "#9ec6a6", "enabled": false, "description": "Model analysis at the 40 largest cities, Open-Meteo."},
+    {"id": "storms", "name": "Storms / cyclones", "group": "WEATHER", "kind": "events", "types": ["cyclone", "severe-storm"], "color": "#c7a0e0", "enabled": true, "description": "GDACS tropical cyclones and EONET severe storms."},
+    {"id": "weather-radar", "name": "Radar / rain", "group": "WEATHER", "kind": "planned", "description": "No openly licensed India radar mosaic integrated yet."},
+    {"id": "weather-alerts", "name": "Weather alerts", "group": "WEATHER", "kind": "planned", "description": "Not implemented."},
+
+    {"id": "earthquakes", "name": "Earthquakes", "group": "DISASTERS", "kind": "events", "types": ["earthquake"], "color": "#e0884f", "enabled": true, "description": "USGS catalogue, GDACS and EONET."},
+    {"id": "floods", "name": "Floods", "group": "DISASTERS", "kind": "events", "types": ["flood"], "color": "#4f9de0", "enabled": true, "description": "GDACS and EONET flood events."},
+    {"id": "landslides", "name": "Landslides", "group": "DISASTERS", "kind": "events", "types": ["landslide"], "color": "#b08a5a", "enabled": true, "description": "EONET landslide events."},
+    {"id": "disaster-events", "name": "Other disaster alerts", "group": "DISASTERS", "kind": "events", "types": ["volcano", "disaster-alert", "natural-event"], "color": "#d26a5c", "enabled": true, "description": "Other GDACS / EONET events."},
+
+    {"id": "fires", "name": "Fires", "group": "ENVIRONMENT", "kind": "events", "types": ["fire-detection", "wildfire"], "color": "#f06a3c", "enabled": true, "description": "NASA FIRMS detections (key required) and EONET wildfires."},
+    {"id": "drought", "name": "Drought", "group": "ENVIRONMENT", "kind": "events", "types": ["drought"], "color": "#c9a64f", "enabled": false, "description": "GDACS / EONET drought events."},
+    {"id": "air-quality", "name": "Air quality", "group": "ENVIRONMENT", "kind": "planned", "description": "OpenAQ requires an API key. Not implemented."},
+    {"id": "land-cover", "name": "Land cover", "group": "ENVIRONMENT", "kind": "planned", "description": "Not staged."},
+    {"id": "protected-areas", "name": "Protected areas", "group": "ENVIRONMENT", "kind": "planned", "description": "WDPA terms require acceptance before download. Not staged."},
+
+    {"id": "roads", "name": "Major roads", "group": "INFRASTRUCTURE", "kind": "reference", "source_id": "natural-earth-roads", "color": "#6b5a3e", "enabled": false, "description": "Natural Earth 1:10m major roads (generalised)."},
+    {"id": "railways", "name": "Railways", "group": "INFRASTRUCTURE", "kind": "reference", "source_id": "natural-earth-railroads", "color": "#7a6a8a", "enabled": false, "description": "Natural Earth 1:10m railways (generalised)."},
+    {"id": "power", "name": "Power plants", "group": "INFRASTRUCTURE", "kind": "entities", "types": ["power-plant"], "color": "#e0c84f", "enabled": false, "description": "WRI Global Power Plant Database v1.3 (2021)."},
+    {"id": "bridges", "name": "Bridges", "group": "INFRASTRUCTURE", "kind": "planned", "description": "Not staged."},
+    {"id": "industrial", "name": "Industrial sites", "group": "INFRASTRUCTURE", "kind": "planned", "description": "Not staged."},
+
+    {"id": "launches", "name": "Launches", "group": "SPACE", "kind": "events", "types": ["launch"], "color": "#e0e0e0", "enabled": true, "description": "Launch Library 2, Indian launch sites."},
+    {"id": "space-weather", "name": "Space weather (Kp)", "group": "SPACE", "kind": "events", "types": ["geomagnetic-kp"], "nonspatial": true, "color": "#b0a0e0", "enabled": false, "description": "NOAA SWPC planetary K-index (global, timeline only)."},
+    {"id": "satellites", "name": "Satellites overhead", "group": "SPACE", "kind": "events", "types": ["satellite-position"], "color": "#9fd0c0", "enabled": false, "description": "Earth-observation, weather and station satellites over India at the last refresh (computed from CelesTrak elements)."},
+    {"id": "satellite-passes", "name": "Satellite passes over AOI", "group": "SPACE", "kind": "planned", "description": "Pass prediction not implemented yet."},
+
+    {"id": "internet-outages", "name": "Internet outages", "group": "CONNECTIVITY", "kind": "events", "types": ["internet-outage-signal"], "nonspatial": true, "color": "#e06a8a", "enabled": false, "description": "IODA country-level signals for India (timeline only, no location)."},
+    {"id": "network-events", "name": "Network events", "group": "CONNECTIVITY", "kind": "planned", "description": "Not implemented."},
+
+    {"id": "news", "name": "News / public events", "group": "PUBLIC EVENTS", "kind": "planned", "description": "No news/event feed integrated yet."},
+
+    {"id": "change-events", "name": "Change events", "group": "ANALYSIS", "kind": "analysis", "color": "#ff9f43", "enabled": true, "description": "Accepted change candidates from the AOI change engine."},
+    {"id": "suppressed-changes", "name": "Suppressed candidates", "group": "ANALYSIS", "kind": "analysis", "color": "#6b7480", "enabled": false, "description": "Candidates rejected by false-alarm gates, with reasons."},
+    {"id": "discovery-cluster", "name": "Discovery cluster", "group": "ANALYSIS", "kind": "analysis", "color": "#4dd0e1", "enabled": false, "description": "Member places of one embedding-based discovery cluster (chosen from a chip or the Imagery drawer). A grouping by RemoteCLIP similarity, not a semantic class."},
+    {"id": "ml-change-candidates", "name": "ML change candidates", "group": "ANALYSIS", "kind": "analysis", "color": "#e040fb", "enabled": false, "description": "MODEL-GENERATED CANDIDATE CHANGES from the BTC-B network (OSCD checkpoint) for analyst-chosen scene pairs. Not verified; separate from the rule-based change events."},
+    {"id": "watchlists", "name": "Watchlists", "group": "ANALYSIS", "kind": "planned", "description": "Not implemented."}
+  ]
+}

@@ -1,0 +1,235 @@
+/* ==========================================================================
+   layout.css
+   The screen frame (top bar, stage, status bar), the navigation rail, the
+   drawer and the floating panels that sit over the map.
+
+   The map fills the whole stage. Panels FLOAT over it (instead of taking
+   columns away from it), so the map stays the dominant surface:
+
+     +------------------------------------------------------------------+
+     | top bar                                                          |
+     +--+-------------+-------------------------------+-----------------+
+     |R | drawer      |            MAP                | intelligence    |
+     |A | (optional)  |                               | panel           |
+     |I |             |                               |                 |
+     |L +-------------+--- timeline -----------------+                 |
+     +--+---------------------------------------------------------------+
+     | status bar                                                       |
+     +------------------------------------------------------------------+
+   ========================================================================== */
+
+.app {
+  /* Space the floating panels leave free on the right of the map. */
+  --intel-offset: calc(var(--intel-width) + var(--gap) * 2);
+  display: grid;
+  grid-template-rows: var(--topbar-height) minmax(0, 1fr) var(--statusbar-height);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+.app--intel-collapsed { --intel-offset: 36px; }
+
+.stage { position: relative; overflow: hidden; min-height: 0; }
+
+/* ----- Top bar ------------------------------------------------------------------ */
+
+.topbar {
+  position: relative; z-index: 20;
+  display: flex; align-items: center; gap: 16px; padding: 0 12px 0 10px;
+  background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+}
+.topbar__center { flex: 1; display: flex; justify-content: center; min-width: 0; }
+.topbar__status { display: flex; align-items: center; gap: 14px; }
+
+.logo { display: flex; align-items: center; gap: 10px; flex: none; }
+/* The logo artwork is white on black; "screen" blending drops the black. */
+.logo__image { height: 34px; width: auto; display: block; mix-blend-mode: screen; }
+.logo__placeholder {
+  display: flex; flex-direction: column; justify-content: center; height: 28px; padding: 0 7px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 7.5px; letter-spacing: 0.24em; line-height: 1.2; color: var(--color-text-muted);
+}
+.logo__placeholder-strong { font-size: 10px; letter-spacing: 0.28em; color: var(--color-text-strong); font-weight: 600; }
+.logo__divider { width: 1px; height: 18px; background: var(--color-border-strong); }
+.logo__product { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--color-text-strong); white-space: nowrap; }
+
+/* ----- Command search ------------------------------------------------------------- */
+
+.search {
+  position: relative; display: flex; align-items: center; width: 100%; max-width: 560px; height: 28px; padding: 0 8px;
+  background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius);
+  transition: border-color var(--motion-fast), background var(--motion-fast), max-width var(--motion-slow) var(--ease);
+}
+/* The command bar widens a little when focused (attention moves there). */
+.search--focused { border-color: var(--color-accent); background: var(--color-map); max-width: 640px; }
+.search__prompt { font-family: var(--font-mono); color: var(--color-accent); margin-right: 8px; }
+.search__input {
+  flex: 1; min-width: 0; height: 100%; border: none; outline: none; background: transparent;
+  color: var(--color-text-strong); font-family: var(--font-mono); font-size: 11.5px;
+}
+.search__input::placeholder { color: var(--color-text-faint); }
+.search__shortcut {
+  font-family: var(--font-mono); font-size: 10px; color: var(--color-text-faint);
+  border: 1px solid var(--color-border); border-radius: var(--radius); padding: 0 5px; line-height: 15px;
+}
+.search__dropdown {
+  position: absolute; top: calc(100% + 4px); left: -1px; right: -1px; z-index: 30;
+  background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55); animation: panel-in var(--motion-fast) var(--ease);
+}
+.search__notice { padding: 8px 10px; border-bottom: 1px solid var(--color-border); color: var(--color-danger); font-size: 11px; }
+.search__dropdown-header {
+  display: flex; justify-content: space-between; padding: 8px 10px 4px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--color-text-faint);
+}
+.search__item {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; border: none; background: transparent;
+  text-align: left; font-size: 11.5px; color: var(--color-text); cursor: pointer;
+  transition: background var(--motion-fast);
+}
+.search__item:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.search__item--run { border-top: 1px solid var(--color-border); }
+.search__item-kind { width: 54px; flex: none; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: var(--color-accent); }
+.search__item-note { margin-left: auto; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-text-faint); }
+.search__dropdown-footer { padding: 7px 10px; border-top: 1px solid var(--color-border); color: var(--color-text-faint); font-size: 10.5px; }
+
+/* ----- Navigation (collapsed rail / expanded panel) ----------------------------------- */
+
+/* Expanding the navigation widens --rail-width. The map, drawer and
+   timeline are all positioned from that variable, so they move over and
+   the map stays fully visible beside the navigation. */
+.app--nav-expanded { --rail-width: 248px; }
+
+.rail {
+  position: absolute; z-index: 12; top: 0; bottom: 0; left: 0; width: var(--rail-width);
+  display: flex; flex-direction: column;
+  background: var(--color-surface); border-right: 1px solid var(--color-border);
+  transition: width var(--motion-normal) var(--ease);
+}
+.rail__scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 6px 0; }
+.rail__group { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
+.rail__group + .rail__group { border-top: 1px solid var(--color-border); }
+.rail__group-title {
+  font-family: var(--font-mono); font-size: 6.5px; letter-spacing: 0.08em; color: var(--color-text-faint);
+  padding: 2px 0 3px; text-align: center; white-space: nowrap;
+}
+.rail__item {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 36px; height: 24px; margin: 1px 0; padding: 0; border: 1px solid transparent; border-radius: var(--radius);
+  background: transparent; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em; color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast), border-color var(--motion-fast);
+}
+.rail__item:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.rail__item--active { background: var(--color-accent-soft); border-color: rgba(95, 168, 211, 0.4); color: var(--color-accent); }
+/* The active indicator: a short accent bar on the panel's left edge. */
+.rail__item--active::before {
+  content: ""; position: absolute; left: -7px; top: 4px; bottom: 4px; width: 2px; background: var(--color-accent);
+  animation: fade-in var(--motion-normal) var(--ease);
+}
+
+/* Expanded: group headings and full-width rows with readable labels. */
+.rail--expanded .rail__group { align-items: stretch; padding: 6px 8px 4px; }
+.rail--expanded .rail__group-title { font-size: 9px; letter-spacing: 0.14em; text-align: left; padding: 2px 6px 4px; }
+.rail--expanded .rail__item { width: 100%; height: 26px; justify-content: flex-start; padding: 0 8px; }
+.rail--expanded .rail__item--active::before { left: -8px; }
+.rail__code { width: 18px; flex: none; font-size: 9px; color: var(--color-text-faint); text-align: left; }
+.rail:not(.rail--expanded) .rail__code { width: auto; font-size: 10px; color: inherit; text-align: center; }
+.rail__item--active .rail__code { color: var(--color-accent); }
+.rail__label {
+  font-family: var(--font-sans); font-size: 12px; letter-spacing: 0; color: var(--color-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rail__item--active .rail__label { color: var(--color-text-strong); }
+
+.rail__toggle {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex: none; height: 30px;
+  border: none; border-top: 1px solid var(--color-border); background: transparent;
+  font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.rail__toggle:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.rail--expanded .rail__toggle { justify-content: flex-start; padding: 0 16px; }
+.rail__toggle-label { font-size: 9px; letter-spacing: 0.14em; }
+
+/* ----- Floating panels (drawer, layers, intelligence) -------------------------------- */
+
+.drawer, .intel, .layer-panel {
+  position: absolute; z-index: 10; display: flex; flex-direction: column; min-height: 0;
+  background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+}
+.drawer {
+  top: var(--gap); bottom: calc(var(--timeline-height) + var(--gap) * 2);
+  left: calc(var(--rail-width) + var(--gap)); width: var(--drawer-width);
+}
+.drawer__body { flex: 1; overflow-y: auto; }
+
+.intel {
+  top: var(--gap); bottom: calc(var(--timeline-height) + var(--gap) * 2);
+  right: var(--gap); width: var(--intel-width);
+}
+.intel__body { flex: 1; overflow-y: auto; }
+.intel--collapsed { width: 28px; right: 0; top: 0; bottom: 0; border-radius: 0; border-width: 0 0 0 1px; }
+.intel__expand {
+  display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; height: 100%; padding: 10px 0;
+  border: none; background: transparent; color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.intel__expand:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.intel__expand-label { writing-mode: vertical-rl; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.18em; }
+
+.panel-header {
+  display: flex; align-items: center; gap: 8px; height: 32px; flex: none; padding: 0 6px 0 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+.panel-header__title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--color-text-strong); margin-right: auto; }
+.panel-header__meta { font-family: var(--font-mono); font-size: 9px; color: var(--color-text-faint); }
+.panel-pad { padding: 10px 12px; }
+
+/* The LAYERS button and its panel sit at the top right of the map. */
+.layers-button {
+  position: absolute; z-index: 11; top: var(--gap); right: var(--intel-offset);
+  display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px;
+  background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--color-text); cursor: pointer;
+  transition: border-color var(--motion-fast), color var(--motion-fast), right var(--motion-slow) var(--ease);
+}
+.layers-button:hover, .layers-button--active { border-color: var(--color-accent); color: var(--color-text-strong); }
+.layers-button__badge { padding: 0 4px; border-radius: var(--radius); background: var(--color-accent-soft); color: var(--color-accent); }
+
+.layer-panel {
+  top: calc(var(--gap) + 34px); right: var(--intel-offset); width: 300px;
+  max-height: calc(100% - var(--timeline-height) - 60px);
+  transition: right var(--motion-slow) var(--ease);
+}
+
+/* Shown when the backend cannot be reached. */
+.offline-banner {
+  position: absolute; z-index: 15; top: calc(var(--gap) + 40px); left: 50%; transform: translateX(-50%);
+  padding: 6px 12px; border: 1px solid var(--color-danger); border-radius: var(--radius); background: rgba(40, 14, 12, 0.92);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; color: #f0b3aa; white-space: nowrap;
+}
+
+/* ----- Status bar ----------------------------------------------------------------- */
+
+.statusbar {
+  display: flex; align-items: center; gap: 18px; padding: 0 12px; z-index: 20;
+  background: var(--color-surface); border-top: 1px solid var(--color-border);
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden;
+}
+.statusbar__product { color: var(--color-text-strong); letter-spacing: 0.14em; }
+.statusbar__items { display: flex; gap: 16px; min-width: 0; overflow: hidden; }
+.statusbar__clock { margin-left: auto; color: var(--color-text-muted); }
+
+/* ----- Narrower screens (below ~1100 px): smaller panels, map keeps priority ----- */
+
+@media (max-width: 1360px) {
+  :root { --drawer-width: 310px; --intel-width: 320px; }
+  .topbar__status .status:nth-child(n + 4) { display: none; }
+}
+@media (max-width: 1100px) {
+  :root { --drawer-width: 280px; --intel-width: 290px; }
+  .logo__product { display: none; }
+  .topbar__status .status:nth-child(n + 3) { display: none; }
+}

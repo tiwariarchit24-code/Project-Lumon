@@ -1,0 +1,32 @@
+{
+  "name": "project-lumon",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Project Lumon - LUMON COMMAND analyst workstation (Stage 0 frontend shell)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "api": "cd server && ../.venv/bin/uvicorn lumon.main:app --host 127.0.0.1 --port 8000",
+    "api:airgapped": "cd server && LUMON_MODE=airgapped ../.venv/bin/uvicorn lumon.main:app --host 127.0.0.1 --port 8000",
+    "lumon": "cd server && ../.venv/bin/python -m lumon.cli",
+    "test:api": "cd server && ../.venv/bin/python -m pytest -q",
+    "stage:all": "cd server && ../.venv/bin/python -m lumon.cli stage-boundaries && ../.venv/bin/python -m lumon.cli refresh-all && ../.venv/bin/python -m lumon.cli ingest-imagery demo-01 && ../.venv/bin/python -m lumon.cli analyse demo-01",
+    "test:ui": "node --test \"src/**/*.test.ts\"",
+    "test": "npm run typecheck && npm run test:ui && npm run test:api"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.12.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  }
+}

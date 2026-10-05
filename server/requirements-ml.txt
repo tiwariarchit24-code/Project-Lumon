@@ -1,0 +1,27 @@
+# OPTIONAL machine-learning dependencies for semantic image search and
+# image similarity (RemoteCLIP) and learned change detection (BTC-B).
+# Lumon runs without them: those capabilities then report NOT STAGED and
+# refuse requests (no substitute runs).
+#   .venv/bin/pip install -r server/requirements-ml.txt
+# Measured on the Apple M4 development machine: ~150 MB download,
+# ~860 MB installed in .venv (mostly torch). CPU only.
+torch==2.14.1             # tensor runtime (CPU)
+torchvision==0.29.1       # image preprocessing used by open_clip
+open_clip_torch==3.3.0    # CLIP architectures + tokenizer (no hub download)
+transformers==5.18.0      # Swin backbone for BTC-B learned change detection (no hub download;
+                          # pip resolves huggingface_hub to 1.33.0 because tokenizers needs <2.0;
+                          # open_clip and timm accept it, semantic search output verified identical)
+#
+# Model weights (not a pip package; 605 MB, Apache-2.0), into data/models/:
+#   curl -L -o data/models/remoteclip/RemoteCLIP-ViT-B-32.pt \
+#     https://huggingface.co/chendelong/RemoteCLIP/resolve/main/RemoteCLIP-ViT-B-32.pt
+#   sha256 60014e395d930a3f2963d1d89c8522bf4ad56775571e4356e866864789af85c4
+# Then build the embedding cache:  npm run lumon -- semantic-index
+#
+# Learned change detection (BTC-B, OSCD checkpoint; 484.6 MB; code MIT,
+# checkpoint licence unstated, trained on CC BY-NC-SA data -> non-commercial
+# research use only), into data/models/btc/:
+#   curl -L -o data/models/btc/BTC-B_oscd96.safetensors \
+#     https://huggingface.co/blaz-r/BTC-B_oscd96/resolve/8666e511282396886a1d3b2b5f8601a46ab0973b/model.safetensors
+#   sha256 8c8e57dc24bae1c8c931adc33917cf694200bc122227b98e9ae7a6aa9cf2fa0d
+# Then: npm run lumon -- ml-change-pairs   and   npm run lumon -- ml-change-run <before> <after>

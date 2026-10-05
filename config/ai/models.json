@@ -1,0 +1,76 @@
+{
+  "_comment": "Candidate models. deployment_status here is the static default; for a model with a 'weights' block Lumon replaces it at runtime with STAGED (weights file present at the expected size, checksum verified when loaded) or NOT STAGED. Check each model's licence before staging.",
+  "models": [
+    {
+      "id": "prithvi-eo-2",
+      "name": "Prithvi-EO-2.0 (family)",
+      "task": "Earth-observation foundation encoder: embeddings, fine-tuning for land cover and change",
+      "source": "IBM / NASA geospatial foundation models (Hugging Face: ibm-nasa-geospatial)",
+      "expected_input": "Multispectral satellite time series (HLS-like bands), image chips",
+      "expected_output": "Embeddings; with task heads: class maps or change maps",
+      "compute_notes": "Transformer encoder; a GPU is recommended. CPU inference on the Apple M4 development machine is untested.",
+      "deployment_status": "NOT STAGED"
+    },
+    {
+      "id": "sam-2",
+      "name": "SAM 2 (Segment Anything Model 2)",
+      "task": "Promptable image and video segmentation (buildings/objects)",
+      "source": "Meta AI (facebookresearch/sam2)",
+      "expected_input": "RGB imagery (best at sub-metre resolution) plus point/box prompts",
+      "expected_output": "Object masks / polygons",
+      "compute_notes": "Several model sizes exist; small variants may run on CPU slowly. Untested here.",
+      "deployment_status": "NOT STAGED"
+    },
+    {
+      "id": "changeformer",
+      "name": "ChangeFormer",
+      "task": "Bi-temporal remote-sensing change detection",
+      "source": "Bandara & Patel, 2022 (open-source research code)",
+      "expected_input": "Co-registered image pairs (before/after)",
+      "expected_output": "Binary change maps",
+      "compute_notes": "Trained on public change benchmarks; needs retraining or validation for Indian campus imagery. GPU recommended. Untested here. Not used: its public checkpoints (LEVIR, DSIFN) are 0.5 m Google Earth RGB, a 20x resolution gap to Sentinel-2; BTC-B (OSCD) was chosen instead.",
+      "deployment_status": "NOT STAGED"
+    },
+    {
+      "id": "remoteclip",
+      "name": "RemoteCLIP ViT-B-32 (image/text embedding)",
+      "task": "Joint image-text embedding for semantic search on remote-sensing imagery",
+      "source": "Liu et al., RemoteCLIP (IEEE TGRS 2024); github.com/ChenDelong1999/RemoteCLIP; weights huggingface.co/chendelong/RemoteCLIP",
+      "expected_input": "RGB image chips (224 x 224 after resizing) and English text queries",
+      "expected_output": "512-dimensional image and text embeddings in one space; cosine similarity ranks chips for a text",
+      "compute_notes": "CPU only on the Apple M4 development machine: weights load in about 1.2 s; about 9 ms per chip and 25 ms per text query; peak memory about 1.5 GB. Trained mostly on aerial/satellite imagery at sub-metre to a few metres resolution, so 10 m Sentinel-2 chips are outside its main training range.",
+      "deployment_status": "NOT STAGED",
+      "license": "Apache-2.0",
+      "weights": {
+        "path": "data/models/remoteclip/RemoteCLIP-ViT-B-32.pt",
+        "url": "https://huggingface.co/chendelong/RemoteCLIP/resolve/main/RemoteCLIP-ViT-B-32.pt",
+        "sha256": "60014e395d930a3f2963d1d89c8522bf4ad56775571e4356e866864789af85c4",
+        "size_bytes": 605208421,
+        "architecture": "ViT-B-32",
+        "framework": "open_clip_torch 3.3.0 + torch 2.14.1 (CPU)"
+      }
+    },
+    {
+      "id": "btc-b-oscd96",
+      "name": "BTC-B (Swin-B + UperNet), OSCD checkpoint — learned change detection",
+      "task": "Bi-temporal change segmentation: before/after RGB pair -> per-pixel change score",
+      "source": "Rolih et al., 'Be the Change You Want to See', IEEE TGRS 2025 (doi:10.1109/TGRS.2025.3585342); code github.com/blaz-r/BTC-change-detection @ db41090 (MIT); checkpoint huggingface.co/blaz-r/BTC-B_oscd96 @ 8666e51",
+      "license": "Code MIT; checkpoint has no stated licence and was trained on OSCD (CC BY-NC-SA): treat as non-commercial research use only",
+      "expected_input": "Two co-registered 8-bit true-colour (RGB) Sentinel-2 tiles of 96 x 96 px at 10 m, each resized to 256 x 256 and ImageNet-normalised; order = before, after",
+      "expected_output": "One logit per pixel (256 x 256); sigmoid > 0.5 = change (BTC's own evaluation threshold)",
+      "training_data": "OSCD: 24 Sentinel-2 L1C (top-of-atmosphere) image pairs, 2015-2018, worldwide cities; labels are URBAN changes only (new buildings, roads). Lumon's archive is L2A (surface reflectance): blue is darker than in OSCD's tiles.",
+      "verified_here": "Reproduced on the OSCD test split (385 tiles, lossless PNG): F1 0.540, precision 0.620, recall 0.479, IoU 0.370 vs published 0.537-0.549 / 0.622-0.657 / 0.469-0.472 / 0.367-0.379.",
+      "compute_notes": "CPU on the Apple M4: ~0.31 s per 256 x 256 tile pair; ~3.2 GB peak memory while loading; a 456 x 486 px scene pair (56 overlapping tiles) takes ~20 s.",
+      "deployment_status": "NOT STAGED",
+      "weights": {
+        "path": "data/models/btc/BTC-B_oscd96.safetensors",
+        "url": "https://huggingface.co/blaz-r/BTC-B_oscd96/resolve/8666e511282396886a1d3b2b5f8601a46ab0973b/model.safetensors",
+        "sha256": "8c8e57dc24bae1c8c931adc33917cf694200bc122227b98e9ae7a6aa9cf2fa0d",
+        "size_bytes": 484579612,
+        "architecture": "Swin-B (embed 128, depths 2-2-18-2, window 12) + UperNet (512), feature subtraction",
+        "backbone_config": "config/ai/btc_b_backbone.json",
+        "framework": "transformers 5.18.0 (SwinBackbone) + torch 2.14.1 (CPU); legacy weight names mapped with transformers' own Swin renaming rules"
+      }
+    }
+  ]
+}

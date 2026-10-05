@@ -1,0 +1,156 @@
+/* ==========================================================================
+   map.css
+   The map workspace and what floats directly on it: control rail, readout,
+   tooltip, measuring banner, scale bar and the bottom timeline.
+   ========================================================================== */
+
+.workspace {
+  position: absolute; inset: 0 0 0 var(--rail-width);
+  overflow: hidden; background: var(--color-map);
+}
+.workspace__map { position: absolute; inset: 0; }
+.workspace__map .maplibregl-canvas:focus { outline: none; }
+
+/* A soft vignette keeps floating panels readable against the map. */
+.workspace::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.55);
+}
+
+/* ----- Control rail (right edge of the visible map) -------------------------------- */
+
+.map-rail {
+  position: absolute; z-index: 4; top: calc(var(--gap) + 40px); right: var(--intel-offset);
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
+  transition: right var(--motion-slow) var(--ease);
+}
+.map-rail__group {
+  display: flex; flex-direction: column; background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+}
+.map-rail__button {
+  width: 28px; height: 26px; display: flex; align-items: center; justify-content: center; padding: 0;
+  border: none; background: transparent; color: var(--color-text); font-family: var(--font-mono); font-size: 14px; cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.map-rail__button + .map-rail__button { border-top: 1px solid var(--color-border); }
+.map-rail__button:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.map-rail__button--text { font-size: 9px; letter-spacing: 0.06em; }
+.map-rail__button--active { color: var(--color-accent); background: var(--color-accent-soft); }
+.map-rail__compass { display: inline-block; font-size: 9px; color: var(--color-danger); transition: transform var(--motion-fast) linear; }
+
+.map-goto {
+  display: flex; flex-direction: column; gap: 4px; width: 170px; padding: 8px;
+  background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  animation: panel-in var(--motion-fast) var(--ease);
+}
+.map-goto__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--color-text-faint); }
+.map-goto__input {
+  height: 24px; padding: 0 6px; border: 1px solid var(--color-border); border-radius: var(--radius);
+  background: var(--color-bg); font-family: var(--font-mono); font-size: 11px; color: var(--color-text-strong);
+}
+.map-goto__input:focus { outline: none; border-color: var(--color-accent); }
+.map-goto__error { font-size: 10px; color: var(--color-danger); }
+
+/* ----- Readout, tooltip, banners ----------------------------------------------------- */
+
+.map-readout {
+  position: absolute; z-index: 3; left: 50%; transform: translateX(-50%);
+  bottom: calc(var(--timeline-height) + var(--gap) * 2);
+  display: flex; gap: 6px; align-items: baseline; padding: 3px 8px;
+  background: rgba(11, 15, 20, 0.86); border: 1px solid var(--color-border); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 10px; pointer-events: none; white-space: nowrap;
+}
+.map-readout__label { color: var(--color-text-faint); }
+.map-readout__value { color: var(--color-text); min-width: 4ch; margin-right: 6px; }
+
+.map-tooltip {
+  position: absolute; z-index: 8; max-width: 280px; padding: 4px 7px; pointer-events: none;
+  background: rgba(11, 15, 20, 0.95); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  font-size: 11px; color: var(--color-text-strong); animation: fade-in var(--motion-fast);
+}
+
+.map-measure, .map-error {
+  position: absolute; z-index: 6; left: 50%; transform: translateX(-50%); top: calc(var(--gap) + 36px);
+  display: flex; gap: 10px; align-items: center; padding: 5px 10px;
+  background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 10.5px; animation: panel-in var(--motion-fast) var(--ease);
+}
+.map-measure__label { color: var(--color-text-faint); letter-spacing: 0.1em; }
+.map-error { top: auto; bottom: calc(var(--timeline-height) + var(--gap) * 2 + 30px); border-color: var(--color-pending); color: var(--color-pending); }
+
+/* MapLibre's scale bar, restyled to match. */
+.maplibregl-ctrl-bottom-right { right: calc(var(--intel-offset) - var(--gap)); bottom: calc(var(--timeline-height) + var(--gap) * 2); transition: right var(--motion-slow) var(--ease); }
+.maplibregl-ctrl-scale {
+  background: rgba(11, 15, 20, 0.86) !important; border-color: var(--color-text-muted) !important; color: var(--color-text-muted) !important;
+  font-family: var(--font-mono); font-size: 9px !important;
+}
+
+/* ----- Timeline ----------------------------------------------------------------------- */
+
+.timeline {
+  position: absolute; z-index: 9; left: calc(var(--rail-width) + var(--gap)); right: var(--intel-offset); bottom: var(--gap);
+  height: var(--timeline-height); display: grid; gap: 10px; align-items: center; padding: 6px 10px;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  background: var(--color-surface-glass); border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  transition: right var(--motion-slow) var(--ease);
+}
+.timeline__controls { display: flex; gap: 2px; }
+.timeline__button {
+  width: 24px; height: 24px; padding: 0; border: 1px solid var(--color-border); border-radius: var(--radius);
+  background: transparent; font-size: 10px; color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.timeline__button:hover { background: var(--color-surface-hover); color: var(--color-text-strong); }
+.timeline__presets { display: grid; grid-template-columns: repeat(3, auto); gap: 2px; }
+.timeline__preset {
+  height: 20px; padding: 0 6px; border: 1px solid var(--color-border); border-radius: var(--radius); background: transparent;
+  font-family: var(--font-mono); font-size: 9px; color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast), border-color var(--motion-fast);
+}
+.timeline__preset:hover { color: var(--color-text-strong); }
+.timeline__preset--active { border-color: var(--color-accent); color: var(--color-accent); background: var(--color-accent-soft); }
+
+.timeline__track { min-width: 0; height: 100%; display: flex; flex-direction: column; }
+.timeline__bars { flex: 1; display: flex; align-items: stretch; gap: 1px; min-height: 0; border-bottom: 1px solid var(--color-border-strong); }
+.timeline__bin {
+  position: relative; flex: 1; min-width: 1px; padding: 0; border: none; background: transparent; cursor: pointer;
+  display: flex; align-items: flex-end;
+}
+.timeline__bin:hover { background: rgba(95, 168, 211, 0.08); }
+.timeline__bar {
+  width: 100%; background: #3b5b78; border-radius: 1px 1px 0 0;
+  transition: height var(--motion-normal) var(--ease), background var(--motion-fast);
+}
+.timeline__bin--future .timeline__bar { background: #222e3a; }
+.timeline__bin--cursor { background: rgba(95, 168, 211, 0.16); box-shadow: inset 0 0 0 1px var(--color-accent); }
+.timeline__bin--cursor .timeline__bar { background: var(--color-accent); }
+.timeline__scene { position: absolute; left: 50%; bottom: -4px; width: 3px; height: 3px; margin-left: -1.5px; background: var(--color-pending); }
+.timeline__change { position: absolute; left: 50%; top: 0; width: 5px; height: 5px; margin-left: -2.5px; background: var(--color-change); transform: rotate(45deg); }
+.timeline__axis { display: flex; justify-content: space-between; padding-top: 4px; font-family: var(--font-mono); font-size: 9px; color: var(--color-text-faint); }
+.timeline__empty { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; color: var(--color-danger); }
+.timeline__legend { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: 9px; color: var(--color-text-faint); white-space: nowrap; }
+.timeline__legend span { display: flex; align-items: center; gap: 5px; }
+.timeline__note { color: var(--color-pending); }
+.legend-bar { width: 6px; height: 8px; background: #3b5b78; display: inline-block; }
+.legend-scene { width: 4px; height: 4px; background: var(--color-pending); display: inline-block; }
+.legend-change { width: 5px; height: 5px; background: var(--color-change); transform: rotate(45deg); display: inline-block; }
+
+/* Telemetry band (aircraft, satellites, model weather, Kp, national
+   signals) under the event bars: kept visible, but never mixed into them. */
+.timeline__telemetry { position: absolute; left: 0; right: 0; bottom: -7px; height: 3px; background: #8a7ab8; transition: opacity var(--motion-normal); }
+.timeline__bars { margin-bottom: 7px; }
+.legend-telemetry { width: 8px; height: 3px; background: #8a7ab8; display: inline-block; }
+.legend-upcoming { width: 7px; height: 7px; border: 1.5px solid #e0e0e0; border-radius: 50%; display: inline-block; }
+.timeline__upcoming {
+  display: flex; align-items: center; gap: 5px; padding: 0; border: none; background: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 9px; color: var(--color-text-faint); transition: color var(--motion-fast);
+}
+.timeline__upcoming--on { color: var(--color-text); }
+.timeline__upcoming:hover { color: var(--color-text-strong); }
+.layer-row__meta--stale { color: var(--color-pending); }
+.health--stale { color: var(--color-pending); }
+.health--unavailable { color: var(--color-danger); }
+
+/* Five legend entries: two compact columns so nothing is clipped. */
+.timeline__legend { display: grid; grid-template-columns: auto auto; column-gap: 12px; row-gap: 3px; align-content: center; }

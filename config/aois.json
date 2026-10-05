@@ -1,0 +1,20 @@
+{
+  "_comment": "Areas of interest (AOIs) for satellite analysis. Keep AOIs small: imagery is downloaded only for these boxes. bbox = [min_lon, min_lat, max_lon, max_lat] in WGS84.",
+  "aois": [
+    {
+      "id": "demo-01",
+      "name": "Navi Mumbai (Ulwe / Panvel creek)",
+      "label": "DEMO AOI",
+      "purpose": "Demonstration AOI chosen because large-scale construction (Navi Mumbai International Airport site) and tidal creeks are present. What the change engine reports is computed from the imagery; nothing is pre-labelled.",
+      "bbox": [73.045, 18.975, 73.09, 19.015],
+      "imagery": {
+        "provider": "Earth Search by Element 84 (AWS Open Data: Sentinel-2 L2A COGs)",
+        "stac_search": "https://earth-search.aws.element84.com/v1/search",
+        "collection": "sentinel-2-l2a",
+        "start": "2018-01-01",
+        "max_scene_cloud_percent": 10,
+        "scenes_per_month": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "_comment": "The India operating area is the union of these staged boundary datasets. Change this list (not the code) to change what 'inside India' means for filtering.",
+  "id": "india-operating-area",
+  "name": "India operating area (land + Exclusive Economic Zone)",
+  "components": ["india-land", "india-eez"],
+  "default_view": {"center": [79.0, 22.5], "zoom": 3.6}
+}

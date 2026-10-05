@@ -1,0 +1,39 @@
+{
+  "_comment": "Swin-B backbone architecture of BTC-B (encoder of facebook/mask2former-swin-base-IN21k-cityscapes-semantic, as used by github.com/blaz-r/BTC-change-detection @ db41090). Architecture hyper-parameters only: the weights come from the BTC-B OSCD checkpoint. Copied from that model's config.json (transformers 4.26 format).",
+  "backbone_config": {
+    "model_type": "swin",
+    "embed_dim": 128,
+    "depths": [
+      2,
+      2,
+      18,
+      2
+    ],
+    "num_heads": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "window_size": 12,
+    "image_size": 224,
+    "patch_size": 4,
+    "num_channels": 3,
+    "mlp_ratio": 4.0,
+    "qkv_bias": true,
+    "hidden_act": "gelu",
+    "layer_norm_eps": 1e-05,
+    "use_absolute_embeddings": false,
+    "path_norm": true,
+    "hidden_dropout_prob": 0.0,
+    "attention_probs_dropout_prob": 0.0,
+    "drop_path_rate": 0.3,
+    "encoder_stride": 32,
+    "out_features": [
+      "stage1",
+      "stage2",
+      "stage3",
+      "stage4"
+    ]
+  }
+}

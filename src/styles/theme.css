@@ -1,0 +1,230 @@
+/* ==========================================================================
+   theme.css
+   Colours, fonts, motion and small shared building blocks.
+
+   All colours and timings are CSS variables so the whole interface can be
+   tuned from one place. Fonts are local system fonts (nothing downloaded).
+   ========================================================================== */
+
+:root {
+  /* Surfaces, darkest (map) to lightest (hovered controls). */
+  --color-map: #080b10;
+  --color-bg: #0b0f14;
+  --color-surface: #0f141a;
+  --color-surface-glass: rgba(13, 18, 24, 0.94);
+  --color-surface-raised: #151b23;
+  --color-surface-hover: #1b232d;
+
+  /* Lines. */
+  --color-border: #1f2833;
+  --color-border-strong: #2c3744;
+
+  /* Text. */
+  --color-text: #d3dae3;
+  --color-text-strong: #eef2f6;
+  --color-text-muted: #8590a0;
+  --color-text-faint: #58636f;
+
+  /* Accent and status colours (used sparingly). */
+  --color-accent: #5fa8d3;
+  --color-accent-soft: rgba(95, 168, 211, 0.12);
+  --color-ok: #4fb286;
+  --color-pending: #d2a24c;
+  --color-danger: #d26a5c;
+  --color-change: #ff9f43;
+
+  /* Fonts. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Monaco, "Cascadia Mono", Consolas, monospace;
+
+  /* Layout sizes. */
+  --topbar-height: 44px;
+  --statusbar-height: 24px;
+  --rail-width: 48px;
+  --drawer-width: 340px;
+  --intel-width: 356px;
+  --timeline-height: 74px;
+  --gap: 8px;
+  --radius: 2px;
+
+  /* MOTION. Everyday transitions are fast; larger panel/camera moves are a
+     little slower. Components use these variables instead of raw numbers. */
+  --motion-fast: 120ms;
+  --motion-normal: 180ms;
+  --motion-slow: 260ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: dark;
+}
+
+/* Respect the operating system's "reduce motion" setting: transitions and
+   keyframe animations are switched off; state stays visible via styling. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-normal: 0ms;
+    --motion-slow: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ----- Reset --------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* the workstation fills the window; panels scroll inside */
+}
+
+button, input, select { font: inherit; color: inherit; }
+ul, ol { margin: 0; padding: 0; }
+ul { list-style: none; }
+code { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-text-muted); }
+
+:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 1px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+* { scrollbar-width: thin; scrollbar-color: var(--color-border-strong) transparent; }
+
+/* ----- Motion helpers --------------------------------------------------------- */
+
+/* Panels slide in slightly and fade (what just appeared?). */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.panel-enter { animation: panel-in var(--motion-normal) var(--ease); }
+.fade-in { animation: fade-in var(--motion-normal) var(--ease); }
+
+/* ----- Shared small components ----------------------------------------------- */
+
+.status-dot {
+  display: inline-block; flex: none; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-text-faint);
+  transition: background var(--motion-normal), box-shadow var(--motion-normal);
+}
+.status-dot--ok { background: var(--color-ok); box-shadow: 0 0 4px rgba(79, 178, 134, 0.55); }
+.status-dot--neutral { background: var(--color-text-muted); }
+.status-dot--pending { background: var(--color-pending); }
+.status-dot--error { background: var(--color-danger); box-shadow: 0 0 4px rgba(210, 106, 92, 0.6); }
+
+.status {
+  display: grid; grid-template-columns: auto auto; column-gap: 6px; align-items: center;
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; white-space: nowrap;
+}
+.status .status-dot { grid-row: 1 / 3; }
+.status__label { color: var(--color-text-faint); }
+.status__value { color: var(--color-text); grid-column: 2; transition: color var(--motion-normal); }
+.status--compact { display: flex; gap: 5px; }
+
+.icon-button {
+  width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; padding: 0;
+  border: 1px solid transparent; border-radius: var(--radius); background: transparent; color: var(--color-text-muted);
+  font-size: 14px; line-height: 1; cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast), border-color var(--motion-fast);
+}
+.icon-button:hover { background: var(--color-surface-hover); border-color: var(--color-border); color: var(--color-text-strong); }
+
+.text-button {
+  padding: 0; border: none; background: none; color: var(--color-accent);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+}
+.text-button:hover { text-decoration: underline; }
+.text-link { color: var(--color-accent); }
+
+.action-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 26px; padding: 0 10px; margin-top: 6px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius); background: var(--color-surface-raised);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--color-text); cursor: pointer;
+  transition: background var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
+}
+.action-button:hover:not(:disabled) { background: var(--color-surface-hover); border-color: var(--color-accent); color: var(--color-text-strong); }
+.action-button:disabled { opacity: 0.45; cursor: not-allowed; }
+.action-button--primary { border-color: var(--color-accent); color: var(--color-accent); width: 100%; }
+
+.field {
+  width: 100%; height: 26px; padding: 0 8px; border: 1px solid var(--color-border); border-radius: var(--radius);
+  background: var(--color-bg); color: var(--color-text-strong); font-size: 11.5px;
+  transition: border-color var(--motion-fast);
+}
+.field:focus { outline: none; border-color: var(--color-accent); }
+.field--small { width: auto; height: 22px; font-family: var(--font-mono); font-size: 10px; }
+
+.empty-note { color: var(--color-text-faint); font-size: 11px; margin: 4px 0; }
+.muted { color: var(--color-text-faint); font-weight: normal; }
+.break { word-break: break-all; }
+
+.notice {
+  margin: 6px 0; padding: 6px 8px; border-left: 2px solid var(--color-pending);
+  background: rgba(210, 162, 76, 0.06); color: var(--color-text); font-size: 11px;
+}
+.notice--error { border-left-color: var(--color-danger); background: rgba(210, 106, 92, 0.07); }
+.notice--ok { border-left-color: var(--color-ok); background: rgba(79, 178, 134, 0.07); }
+
+.spinner {
+  display: inline-block; width: 10px; height: 10px; margin-right: 8px; border-radius: 50%;
+  border: 1.5px solid var(--color-border-strong); border-top-color: var(--color-accent);
+  animation: spin 0.8s linear infinite;
+}
+
+/* Evidence types: one small badge per claim. */
+.evidence-tag, .plain-tag {
+  display: inline-block; padding: 1px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: var(--color-text-muted); white-space: nowrap;
+}
+.evidence-tag--observed { border-color: #3e6f8f; color: #8fc1e3; }
+.evidence-tag--inferred { border-color: #7a6a3c; color: #d9bd74; }
+.evidence-tag--gis-derived { border-color: #4b5a6b; color: #a9b8c8; }
+.evidence-tag--verified { border-color: #3d7a60; color: #7fd1ab; }
+.evidence-tag--unverifiable { border-color: #7a4040; color: #e09a90; }
+.plain-tag--confirmed { border-color: #3d7a60; color: #7fd1ab; }
+.plain-tag--rejected { border-color: #7a4040; color: #e09a90; }
+.plain-tag--relabelled { border-color: #7a6a3c; color: #d9bd74; }
+
+/* Layer ON/OFF switch (components/LayerSwitch.tsx). The state is shown three
+   ways so it never depends on one cue: track fill, knob side, and ON/OFF text. */
+.switch {
+  position: relative; flex: none; width: 42px; height: 18px; padding: 0; margin: 0;
+  appearance: none; -webkit-appearance: none;
+  border: 1px solid var(--color-border-strong); border-radius: 9px; background: #0b0f15;
+  cursor: pointer; font: inherit; color: inherit;
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.switch:hover { border-color: var(--color-text-muted); }
+.switch:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.switch__knob {
+  position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #8590a0;
+  transition: transform var(--motion-fast) var(--ease), background var(--motion-fast);
+}
+.switch__text {
+  position: absolute; top: 0; right: 5px; line-height: 16px;
+  font-family: var(--font-mono); font-size: 8.5px; font-weight: 600; letter-spacing: 0.06em; color: #8590a0;
+}
+.switch--on { background: var(--color-accent); border-color: var(--color-accent); }
+.switch--on:hover { border-color: var(--color-text); }
+.switch--on .switch__knob { transform: translateX(24px); background: #080b10; }
+.switch--on .switch__text { right: auto; left: 7px; color: #080b10; }
+@media (prefers-reduced-motion: reduce) { .switch, .switch__knob { transition: none; } }
+
+.check, .check-row { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--color-text-muted); }
+.check-row { padding: 4px 0; font-family: var(--font-sans); font-size: 11.5px; color: var(--color-text); }
+.check-row .muted { margin-left: auto; font-family: var(--font-mono); font-size: 9.5px; }

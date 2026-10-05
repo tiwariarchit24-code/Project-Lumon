@@ -1,0 +1,193 @@
+{
+  "_comment": "The single registry of AI/ML capabilities Lumon is structured for. status: READY (model + data deployed and validated for the pilot), STAGED (model weights present locally, not yet validated), PARTIAL (a non-ML fallback runs, the learned model does not), NOT STAGED (designed, nothing deployed). Nothing here produces output until a real model is staged; the 'fallback' field names the existing deterministic component, if any, that runs today on the demo AOI. A capability with a 'runtime' block (semantic-search) has its status set at runtime from the model files actually present, plus a separate retrieval_status (NOT STAGED / INDEXING / READY / PARTIAL / UNAVAILABLE) describing its index.",
+  "statuses": [
+    "READY",
+    "STAGED",
+    "PARTIAL",
+    "NOT STAGED"
+  ],
+  "capabilities": [
+    {
+      "id": "semantic-search",
+      "name": "Semantic Satellite Search",
+      "ui": "Semantic Search",
+      "purpose": "Rank staged Sentinel-2 image chips by how similar their RemoteCLIP embedding is to a text description (e.g. 'airport runway').",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Staged Sentinel-2 L2A scenes (demo AOI today)",
+        "RemoteCLIP ViT-B-32 weights",
+        "embedding cache (semantic_chips table)"
+      ],
+      "model": "remoteclip",
+      "component": "RemoteCLIP image/text embeddings + cosine-similarity ranking over cached chip embeddings (exact search, no approximate index needed at this size)",
+      "vector_index": "SQLite embedding cache, exact cosine search",
+      "output": "Ranked image chips: scene id, acquisition date, chip footprint, cosine similarity (not a probability), provenance",
+      "fallback": null,
+      "limitations": "Model similarity only: a high rank is NOT a detection and does not prove an object is present. RemoteCLIP was trained mostly on sub-metre to few-metre imagery; Sentinel-2 is 10 m, so small objects are invisible and ranking is coarse. Covers the staged demo AOI only; no NIT Raipur imagery is staged, so pilot-scoped image search returns nothing. Not validated against ground truth.",
+      "runtime": "lumon.imagery.semantic"
+    },
+    {
+      "id": "image-similarity",
+      "name": "Image-to-Image Similarity",
+      "ui": "Image Similarity",
+      "purpose": "Find image chips that look like a chosen example chip: look-alike places elsewhere, or how much each date at the same place looks like it.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Staged Sentinel-2 L2A scenes (demo AOI today)",
+        "RemoteCLIP ViT-B-32 weights",
+        "embedding cache (semantic_chips table, shared with semantic search)"
+      ],
+      "model": "remoteclip",
+      "component": "Cosine similarity between cached RemoteCLIP image embeddings (exact search); no model inference at query time",
+      "output": "Ranked image chips: scene id, acquisition date, chip footprint, cosine similarity (not a probability), provenance",
+      "fallback": "Separate non-ML tool, still available and labelled 'non-semantic': spectral / change-history feature similarity of 100 m tiles (FIND TILES LIKE THIS, Dossiers). It is never used in place of the model.",
+      "limitations": "Visual similarity of 10 m true-colour chips only: looking alike is not evidence of the same objects or activity. Compares chips of the same size only. Demo AOI only (one small area, so few distinct places at 2.24 km); no NIT Raipur imagery is staged. Not validated against ground truth.",
+      "runtime": "lumon.imagery.semantic"
+    },
+    {
+      "id": "discovery",
+      "name": "Discovery & Embedding Clustering",
+      "ui": "Discovery",
+      "purpose": "Group the whole image archive by RemoteCLIP embedding similarity so the analyst can start from one interesting chip and explore every other place in its group (PS 26227 §2.2.4), without writing a new query.",
+      "status": "NOT STAGED",
+      "runtime": "lumon.imagery.discovery",
+      "requires_data": [
+        "Cached RemoteCLIP chip embeddings (semantic_chips)",
+        "RemoteCLIP ViT-B-32 staged"
+      ],
+      "model": "remoteclip",
+      "component": "Spherical k-means per chip size on the cached embeddings (numpy; k by silhouette; deterministic seeds); versioned clusters; incremental assignment of new chips to frozen centroids",
+      "output": "Versioned clusters with neutral IDs, members (AOI, scene, date, footprint, embedding version), representatives, places, extent, compactness, provenance; reference chip -> cluster -> places ranked by similarity",
+      "fallback": null,
+      "limitations": "Embedding-based groupings, not semantic classes: no cluster is named after an object or activity. Weak cluster structure on this archive (silhouette 0.19-0.22); some clusters are driven by haze, season or a single dominant place. One small AOI (34 places). Incremental updates assign new chips to existing clusters only; new kinds of imagery need a re-cluster (new version)."
+    },
+    {
+      "id": "eo-embedding",
+      "name": "EO Embedding / Representation Search",
+      "ui": null,
+      "purpose": "Turn each image tile into a learned vector for search, clustering and similarity.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Historical imagery"
+      ],
+      "model": "prithvi-eo-2",
+      "component": "Encoder inference + vector store (pgvector planned)",
+      "output": "Per-tile embedding vectors",
+      "fallback": null,
+      "limitations": "Model weights, compute and a vector store are not staged."
+    },
+    {
+      "id": "segmentation",
+      "name": "Building / Object Segmentation",
+      "ui": "Segmentation",
+      "purpose": "Outline buildings and objects in imagery.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Authorized drone / orthomosaic imagery",
+        "Building footprints / inventory"
+      ],
+      "model": "sam-2",
+      "component": "Promptable segmentation on high-resolution imagery",
+      "output": "Polygons with model, version and confidence",
+      "fallback": null,
+      "limitations": "10 m Sentinel-2 is too coarse for individual buildings; needs sub-metre imagery and footprints for validation."
+    },
+    {
+      "id": "change-detection",
+      "name": "Learned Change Detection",
+      "ui": "Change Detection",
+      "purpose": "Mark MODEL-GENERATED CANDIDATE CHANGES between two dated Sentinel-2 scenes of the same place, for analyst review.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Two usable Sentinel-2 L2A scenes on the same pixel grid (demo AOI today)",
+        "BTC-B OSCD checkpoint",
+        "transformers (Swin backbone)"
+      ],
+      "model": "btc-b-oscd96",
+      "component": "BTC-B bi-temporal network on 96 px tiles (overlap-averaged) + rule-based pair checks and evidence flags",
+      "output": "Georeferenced score and candidate-mask GeoTIFFs, candidate regions with scores, spectral context, flags, persistence, baseline overlap, provenance and analyst review",
+      "fallback": "Separate rule-based baseline, still available and labelled: composite change engine with six false-alarm gates (Change Detection / Change Explorer). Never used in place of the model.",
+      "limitations": "Candidates, not verified change. Trained on OSCD (urban changes, L1C top-of-atmosphere 2015-2018); Lumon's archive is L2A, so colours differ (blue darker). Large homogeneous changes (levelled ground, runways) are often missed; tidal/seasonal water and vegetation produce false alarms across seasons. Checkpoint licence unstated, trained on CC BY-NC-SA data: non-commercial research only. Demo AOI only; no NIT Raipur imagery.",
+      "runtime": "lumon.change_ml.learned"
+    },
+    {
+      "id": "land-cover",
+      "name": "Land-Cover Classification",
+      "ui": "Land Cover",
+      "purpose": "Label each area as built, vegetation, water, bare and similar classes.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Historical imagery",
+        "Land-use / land-cover"
+      ],
+      "model": "prithvi-eo-2",
+      "component": "Fine-tuned EO classifier",
+      "output": "Class map with per-class confidence",
+      "fallback": "Spectral-index thresholds (implemented, demo AOI only, uncalibrated)",
+      "limitations": "Needs labelled reference data to train and validate."
+    },
+    {
+      "id": "construction",
+      "name": "Construction Detection",
+      "ui": "Construction",
+      "purpose": "Find new buildings and earthworks and date them.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Historical imagery",
+        "Building footprints / inventory",
+        "Historical construction / change records"
+      ],
+      "model": "changeformer",
+      "component": "Change model specialised to construction + footprint linking",
+      "output": "Construction events with earliest-supported dates",
+      "fallback": "Heuristic soil-to-built rule in the change engine (demo AOI only, unvalidated)",
+      "limitations": "Building-level answers need footprints and sub-metre imagery."
+    },
+    {
+      "id": "vegetation",
+      "name": "Vegetation Analysis",
+      "ui": "Vegetation",
+      "purpose": "Measure vegetation cover and its change over seasons and years.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Historical imagery"
+      ],
+      "model": null,
+      "component": "Index time series (NDVI) with seasonal composites",
+      "output": "Vegetation maps and trends",
+      "fallback": "NDVI-based vegetation class inside the change engine (demo AOI only)",
+      "limitations": "No imagery staged for the pilot area."
+    },
+    {
+      "id": "temporal-analysis",
+      "name": "Temporal Pattern Analysis",
+      "ui": "Temporal Analysis",
+      "purpose": "Describe how a place changes over time (phases, seasonality, persistence).",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Historical imagery",
+        "Historical construction / change records"
+      ],
+      "model": "prithvi-eo-2",
+      "component": "Multi-temporal encoder + rules",
+      "output": "Per-place timelines with evidence",
+      "fallback": "Per-tile observation history (implemented, demo AOI only)",
+      "limitations": "No pilot imagery staged."
+    },
+    {
+      "id": "analyst-summary",
+      "name": "Evidence-Grounded Analyst Summary",
+      "ui": "Evidence / Confidence",
+      "purpose": "Summarise findings strictly from stored evidence, with references and confidence.",
+      "status": "NOT STAGED",
+      "requires_data": [
+        "Outputs of the capabilities above"
+      ],
+      "model": null,
+      "component": "Local language model constrained to cited evidence",
+      "output": "Short summary with evidence references; never unsupported claims",
+      "fallback": "Evidence cards, gates and provenance are already shown for every change (no generated text)",
+      "limitations": "No local language model is staged; nothing is generated."
+    }
+  ]
+}

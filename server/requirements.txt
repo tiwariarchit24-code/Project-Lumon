@@ -1,0 +1,11 @@
+# Backend dependencies (install into the project venv):
+#   python3 -m venv .venv && .venv/bin/pip install -r server/requirements.txt
+fastapi==0.142.2        # HTTP API
+uvicorn==0.54.0        # API server
+pyshp==3.1.6          # read zipped shapefiles (Natural Earth) - pure Python
+certifi==2026.7.22        # HTTPS certificate bundle (python.org macOS builds lack one)
+rasterio==1.5.2       # read Sentinel-2 Cloud-Optimized GeoTIFF windows (bundles GDAL)
+numpy==2.5.3          # array maths for imagery
+pytest==9.1.1         # tests
+httpx==0.28.1          # used by FastAPI's test client
+sgp4==2.27            # satellite orbit propagation (CelesTrak elements)

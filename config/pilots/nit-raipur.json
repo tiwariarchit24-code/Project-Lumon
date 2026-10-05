@@ -1,0 +1,49 @@
+{
+  "_comment": "The single authoritative definition of the NIT Raipur pilot. India stays the broad OSINT/GEOINT coverage area; NIT Raipur is the detailed demonstrator. NO coordinates are typed in here: the provisional study area is derived at runtime from a staged gazetteer place, and a verified campus boundary replaces it automatically once its file exists (see boundary.verified_file).",
+  "id": "nit-raipur",
+  "canonical_name": "National Institute of Technology Raipur",
+  "short_name": "NIT Raipur",
+  "description": "Detailed pilot study area for imagery archive, segmentation, change detection, land-cover, construction and vegetation analysis, and evidence-grounded review at a single, well-known site.",
+  "status": "FOUNDATION",
+  "study_areas": [
+    {
+      "id": "nit-raipur",
+      "name": "NIT Raipur study area",
+      "level": "study-area",
+      "description": "Working area around the campus used to scope searches and stage imagery."
+    },
+    {
+      "id": "nit-raipur-campus",
+      "name": "NIT Raipur Campus",
+      "level": "campus",
+      "description": "The campus itself. Needs a verified campus boundary; until then searches scoped to it report NOT STAGED."
+    }
+  ],
+  "boundary": {
+    "verified_file": "data/pilots/nit-raipur/campus-boundary.geojson",
+    "verified_metadata_file": "data/pilots/nit-raipur/campus-boundary.meta.json",
+    "provisional": {
+      "method": "gazetteer-buffer",
+      "gazetteer_place": "Raipur",
+      "gazetteer_kind": "city",
+      "half_size_km": 8,
+      "source": "Natural Earth populated place 'Raipur' (city reference point, staged in data/boundaries/india-places.geojson)",
+      "meaning": "A square search area centred on Raipur's city reference point. It is NOT the campus boundary and is not authoritative; it only scopes searches and imagery staging until a verified boundary is supplied."
+    }
+  },
+  "data_registry": [
+    {"name": "Campus boundary", "category": "boundary", "expected_format": "GeoJSON / Shapefile / GeoPackage polygon (EPSG:4326 or UTM 44N)", "source": "NIT Raipur estate office (expected) or a verified public survey", "state": "NOT STAGED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Replaces the provisional study area when placed at data/pilots/nit-raipur/campus-boundary.geojson."},
+    {"name": "Site / master plan", "category": "plan", "expected_format": "Georeferenced PDF/GeoTIFF or CAD (DXF/DWG) with control points", "source": "Institute planning / estate office (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Needed to link detections to planned buildings and zones."},
+    {"name": "Building footprints / inventory", "category": "buildings", "expected_format": "Polygon layer with building id, name, use (e.g. hostel, academic), year built", "source": "Estate office (expected); public footprints as a fallback", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Required for 'near the hostels' and 'buildings added after' questions; segmentation validation."},
+    {"name": "Roads / pathways", "category": "roads", "expected_format": "Line layer", "source": "Estate office or public map data (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Only generalised national roads (Natural Earth 1:10m) are staged today; they are not campus roads."},
+    {"name": "Land-use / land-cover", "category": "land-cover", "expected_format": "Polygon or raster classes with a legend", "source": "Institute or derived from imagery with labels (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus and surroundings", "notes": "Training and validation reference for land-cover classification."},
+    {"name": "Drainage / water", "category": "water", "expected_format": "Lines and polygons (drains, ponds, tanks)", "source": "Estate office (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": ""},
+    {"name": "Historical plans", "category": "history", "expected_format": "Dated plan sheets (scans) with georeferencing", "source": "Institute archive (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Supports dating of construction phases."},
+    {"name": "Historical construction / change records", "category": "history", "expected_format": "Table: structure, start date, completion date, location reference", "source": "Estate office / works department (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Ground truth for earliest-date error evaluation."},
+    {"name": "Historical imagery (Sentinel-2 L2A)", "category": "imagery", "expected_format": "Cloud-Optimized GeoTIFF windows via the existing archive pipeline", "source": "Earth Search / AWS Open Data (public)", "state": "NOT STAGED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Study area", "notes": "Can be staged with the existing ingest-imagery pipeline once the study area is confirmed; deliberately not staged on a provisional area."},
+    {"name": "Ground-truth photos", "category": "ground-truth", "expected_format": "Geotagged, dated photographs", "source": "Field visits (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": ""},
+    {"name": "Ground-truth change events", "category": "ground-truth", "expected_format": "Table/GeoJSON: location, change type, date or date range, evidence", "source": "Institute records + field verification (expected)", "state": "EXPECTED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Feeds precision@K and earliest-date error (config/evaluation/reference_dates.json)."},
+    {"name": "DEM / topography", "category": "terrain", "expected_format": "GeoTIFF DEM", "source": "Public DEM (e.g. Copernicus DEM) or survey (expected)", "state": "NOT STAGED", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Study area", "notes": ""},
+    {"name": "Authorized drone / orthomosaic imagery", "category": "imagery", "expected_format": "GeoTIFF orthomosaic with capture date and GSD", "source": "Authorized institute flights only (expected)", "state": "NOT AVAILABLE", "provenance": null, "temporal_coverage": null, "spatial_coverage": "Campus", "notes": "Only flights with explicit institutional authorization will be accepted."}
+  ]
+}

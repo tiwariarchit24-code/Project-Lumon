@@ -1,0 +1,594 @@
+{
+  "manifest_id": "lumon-demo01-internal",
+  "manifest_version": "1.1.0",
+  "created_at": "2026-10-05",
+  "created_by": "Project Lumon build (no analyst has labelled anything yet)",
+  "creation_method": "Dataset = every usable/degraded Sentinel-2 L2A scene of demo-01 in the archive (ids and file checksums read from the scenes table). Queries, reference chips and change pairs chosen by the developers to cover SIH 26227 concepts. All label slots are empty and PENDING: relevance and change labels must be established by human analysts and then the manifest re-versioned and sealed.",
+  "ground_truth_source": "NONE YET — no human relevance judgements, change labels or change masks exist for this archive",
+  "dataset": {
+    "aoi_id": "demo-01",
+    "area_km2": 21.0,
+    "sensor": "Sentinel-2 L2A (S2A/S2B/S2C), 10 m, B02/B03/B04/B08/B11 + SCL",
+    "source": "Earth Search by Element 84 (AWS Open Data), public imagery",
+    "date_range": [
+      "2018-01-01",
+      "2026-12-31"
+    ],
+    "scenes": [
+      {
+        "id": "S2B_43QBB_20180103_3_L2A",
+        "acquired_at": "2018-01-03T05:53:37Z",
+        "file_sha256": "2c54de716e71ebdca6fa28f45a14160818ba0efbdf08815204741fa4b2e2c1e2"
+      },
+      {
+        "id": "S2B_43QBB_20180304_2_L2A",
+        "acquired_at": "2018-03-04T05:53:34.256000Z",
+        "file_sha256": "401dd6519f5c6f465d88de976b65c815d9487ebdd8ad37e48059e69f5f3ae84b"
+      },
+      {
+        "id": "S2A_43QBB_20181025_1_L2A",
+        "acquired_at": "2018-10-25T05:53:37.517000Z",
+        "file_sha256": "2fd4de77a239a8a664106ed0c2ddc08a489fc2d5a92edc89d80af3d0cc5bd851"
+      },
+      {
+        "id": "S2A_43QBB_20181214_0_L2A",
+        "acquired_at": "2018-12-14T05:53:32.352000Z",
+        "file_sha256": "ea895a99510a8b00e4f44fb953977bee05332050aa310813956ed05e999fc524"
+      },
+      {
+        "id": "S2A_43QBB_20190113_0_L2A",
+        "acquired_at": "2019-01-13T05:53:36.560000Z",
+        "file_sha256": "24e178453d9f8015a47c6a51dc8352c5840452461a81267c343156ed51d434bc"
+      },
+      {
+        "id": "S2B_43QBB_20190217_0_L2A",
+        "acquired_at": "2019-02-17T05:53:40.520000Z",
+        "file_sha256": "633971cbdf195b7114435f947e07a8465289ee5c658cce5178ba8e324aab6db4"
+      },
+      {
+        "id": "S2B_43QBB_20190329_1_L2A",
+        "acquired_at": "2019-03-29T05:53:42.500000Z",
+        "file_sha256": "27e61e58574c1b2d528c77692ccedc266ea60704d7fe9ffa4d5a0a123d10db7c"
+      },
+      {
+        "id": "S2A_43QBB_20190403_1_L2A",
+        "acquired_at": "2019-04-03T05:53:41.530000Z",
+        "file_sha256": "76174a04670d33dcbf7e4a61cc15035ccb58bd4010cee81a79d56d4a75e94787"
+      },
+      {
+        "id": "S2B_43QBB_20190528_1_L2A",
+        "acquired_at": "2019-05-28T05:53:49.322000Z",
+        "file_sha256": "89b83ef13077ea8b323d9715d1b5d35d470fa5e310790e0a3677a2fd6e3d5c15"
+      },
+      {
+        "id": "S2B_43QBB_20191005_0_L2A",
+        "acquired_at": "2019-10-05T05:53:41.630000Z",
+        "file_sha256": "830b51b99115ea37d60c83a2c10db7fd8c1e3d0f0b6dae6ed7d7e940bae13e39"
+      },
+      {
+        "id": "S2B_43QBB_20191114_1_L2A",
+        "acquired_at": "2019-11-14T05:53:39.676000Z",
+        "file_sha256": "d03bd40f48b57ab7ea85b97136553c12fff4da9f6f453e9fdbc544ade0dcd2d2"
+      },
+      {
+        "id": "S2A_43QBB_20191219_1_L2A",
+        "acquired_at": "2019-12-19T05:53:34.724000Z",
+        "file_sha256": "3f13aa1945d5c65bb9412d5d2338de97b3c11aa2b15915f7225d06c1c385ad45"
+      },
+      {
+        "id": "S2A_43QBB_20200118_1_L2A",
+        "acquired_at": "2020-01-18T05:53:34.699000Z",
+        "file_sha256": "2f50193a7a8ae548b51add6d64749f34378cdc71639fd750b836748b59b10eb6"
+      },
+      {
+        "id": "S2A_43QBB_20200217_1_L2A",
+        "acquired_at": "2020-02-17T05:53:34.587000Z",
+        "file_sha256": "acd7f844a649ef47e189ce4d705bf628bbd64be712697052bbfa2ced37bada20"
+      },
+      {
+        "id": "S2A_43QBB_20200308_1_L2A",
+        "acquired_at": "2020-03-08T05:53:36.815000Z",
+        "file_sha256": "7026ca22c5e235fc86c06f44be542837366baae02301108d30d709fc155ee0d3"
+      },
+      {
+        "id": "S2B_43QBB_20200402_1_L2A",
+        "acquired_at": "2020-04-02T05:53:38.122000Z",
+        "file_sha256": "8be92b98ff7109a0e1ad940293189847f3192882530506af7edc6d0d4693e29f"
+      },
+      {
+        "id": "S2B_43QBB_20200502_0_L2A",
+        "acquired_at": "2020-05-02T05:53:37.355000Z",
+        "file_sha256": "2f12d332290faa00bff99b13d0b5ec10d8ff0bc076316d503f8f6133b59191c9"
+      },
+      {
+        "id": "S2A_43QBB_20200904_1_L2A",
+        "acquired_at": "2020-09-04T05:53:45.361000Z",
+        "file_sha256": "b6f86290ce0744e0bcab5b30343d869c17e080d599b14c2a12df15021903a189"
+      },
+      {
+        "id": "S2B_43QBB_20201029_1_L2A",
+        "acquired_at": "2020-10-29T05:53:43.892000Z",
+        "file_sha256": "aa381605a1ef4435a6013e134650dbd7672a7979ad8bdf7032c7ae1b8f0ec373"
+      },
+      {
+        "id": "S2A_43QBB_20201123_1_L2A",
+        "acquired_at": "2020-11-23T05:53:42.631000Z",
+        "file_sha256": "d7cf2affb89056138469da34ac9125f726f7c00ced5e8b38f3e2a5505216905d"
+      },
+      {
+        "id": "S2B_43QBB_20201228_1_L2A",
+        "acquired_at": "2020-12-28T05:53:38.532000Z",
+        "file_sha256": "3f148032ee54691b1381994770fba9d86d6d781fdf31cdc1e35154ff7b5b6ed6"
+      },
+      {
+        "id": "S2B_43QBB_20210127_1_L2A",
+        "acquired_at": "2021-01-27T05:53:40.690000Z",
+        "file_sha256": "483eb8816411188e267f896b8447aa82f89309fd21d6fe5a0e1f2bef22d56fb0"
+      },
+      {
+        "id": "S2A_43QBB_20210221_1_L2A",
+        "acquired_at": "2021-02-21T05:53:40.357000Z",
+        "file_sha256": "33ec3515e67a8107e4f4686a36580773cca1bb299030a7b28b77b81209b741b9"
+      },
+      {
+        "id": "S2B_43QBB_20210308_1_L2A",
+        "acquired_at": "2021-03-08T05:53:40.067000Z",
+        "file_sha256": "d9be482bce13436189e1082ce472970e7a2059dfafad22cd9a43ec26394ff727"
+      },
+      {
+        "id": "S2B_43QBB_20210407_2_L2A",
+        "acquired_at": "2021-04-07T05:53:39.438000Z",
+        "file_sha256": "c0ab12a2828123c74b9b4711a33d881e21c80e21bc992375b0faf381f946fd0f"
+      },
+      {
+        "id": "S2B_43QBB_20210507_0_L2A",
+        "acquired_at": "2021-05-07T05:53:38.403000Z",
+        "file_sha256": "989a788b8701f6dd67b6c6fe7fa88f0641b525dcab0db9ee8bbbe9c04f79bbaf"
+      },
+      {
+        "id": "S2B_43QBB_20211024_0_L2A",
+        "acquired_at": "2021-10-24T05:53:42.412000Z",
+        "file_sha256": "74a735e59884c2cc7ec6b40e4f77042242e8d80876dac29274b281e0ab1a3e90"
+      },
+      {
+        "id": "S2B_43QBB_20211123_1_L2A",
+        "acquired_at": "2021-11-23T05:53:38.775000Z",
+        "file_sha256": "ae1c8ba3b98e54bb6cf02934032d1873598db052ab3e98c1a8ba59d0f39a7bdb"
+      },
+      {
+        "id": "S2B_43QBB_20211223_1_L2A",
+        "acquired_at": "2021-12-23T05:53:35.831000Z",
+        "file_sha256": "2e5bb0408ccf6756914418a5ab90ce2819a90d715695dd814ee0f1f785b5d451"
+      },
+      {
+        "id": "S2A_43QBB_20220127_0_L2A",
+        "acquired_at": "2022-01-27T05:53:40.959000Z",
+        "file_sha256": "7262cbd68ec2af148e108745248bd8d26a96d2909e97d5d5dec7a08f5409a7ca"
+      },
+      {
+        "id": "S2B_43QBB_20220201_0_L2A",
+        "acquired_at": "2022-02-01T05:53:35.063000Z",
+        "file_sha256": "1736c51887dc3f877d72a129a396d1435b506e87933b55dc465bb3e40f708801"
+      },
+      {
+        "id": "S2A_43QBB_20220318_0_L2A",
+        "acquired_at": "2022-03-18T05:53:44.541000Z",
+        "file_sha256": "3113190e8a4c20cea7cab166657337cd20a03e2b538494db4ecf103e6859d81a"
+      },
+      {
+        "id": "S2B_43QBB_20220402_0_L2A",
+        "acquired_at": "2022-04-02T05:53:37.432000Z",
+        "file_sha256": "66071ba399f6ed4ee81a7e7c2fdf1c2f20204c7bd314ce98bab3c1fb7ecd3ad6"
+      },
+      {
+        "id": "S2B_43QBB_20221029_0_L2A",
+        "acquired_at": "2022-10-29T05:53:39.650000Z",
+        "file_sha256": "f28d1ed0c7b451eaf3faf0a2e83110ad7aab4089360241392c8513f12620a55c"
+      },
+      {
+        "id": "S2B_43QBB_20221108_0_L2A",
+        "acquired_at": "2022-11-08T05:53:39.648000Z",
+        "file_sha256": "ce63a99df6509398c79d021a74b2b849421bebc45fa69e71e910169cd7d0a43d"
+      },
+      {
+        "id": "S2B_43QBB_20221228_0_L2A",
+        "acquired_at": "2022-12-28T05:53:40.041000Z",
+        "file_sha256": "7ee9f01369e37fc985580f5ef8305689614b232a5db1f65e76da66f546e685f6"
+      },
+      {
+        "id": "S2A_43QBB_20230122_0_L2A",
+        "acquired_at": "2023-01-22T05:53:36.619000Z",
+        "file_sha256": "022f03ca686bb7a2784d1efc697c321f2b7a6f746c913f46f6d5bfc039c7f7ca"
+      },
+      {
+        "id": "S2A_43QBB_20230211_0_L2A",
+        "acquired_at": "2023-02-11T05:53:39.281000Z",
+        "file_sha256": "cfe2cfda8315520eb4e56cc3fff175d3bc6fdebc914a29f52c680aeced5a3865"
+      },
+      {
+        "id": "S2A_43QBB_20230303_0_L2A",
+        "acquired_at": "2023-03-03T05:53:37.769000Z",
+        "file_sha256": "fc04a36658b16baa7af93f5b10dcc2b77fff0f92b1f620d772cf05a7495a742d"
+      },
+      {
+        "id": "S2A_43QBB_20230412_0_L2A",
+        "acquired_at": "2023-04-12T05:53:40.973000Z",
+        "file_sha256": "2cfd76bb0bdd4cdb42328715945cb60d4581efbea740d83c568ca669fb8391bd"
+      },
+      {
+        "id": "S2A_43QBB_20230512_0_L2A",
+        "acquired_at": "2023-05-12T05:53:40.158000Z",
+        "file_sha256": "780843f7236e9f8daccd8f3596fe18827ae4234d6feeb4bcd46b3c121c319217"
+      },
+      {
+        "id": "S2A_43QBB_20231009_0_L2A",
+        "acquired_at": "2023-10-09T05:53:40.407000Z",
+        "file_sha256": "b887057409f3276d508a87a9da5677736bca2177fd8735e4d43924f2a54ec800"
+      },
+      {
+        "id": "S2A_43QBB_20231118_0_L2A",
+        "acquired_at": "2023-11-18T05:53:43.522000Z",
+        "file_sha256": "50691332e25890d617bc53ae2cd4d3e1423e206e0ba3461abaa20ee8b2472d7a"
+      },
+      {
+        "id": "S2A_43QBB_20231208_0_L2A",
+        "acquired_at": "2023-12-08T05:53:35.094000Z",
+        "file_sha256": "48b1cb0443f7d939606cec02536c4a0f7b381a1bfaa057f3f3a712d96629dbdf"
+      },
+      {
+        "id": "S2B_43QBB_20240112_1_L2A",
+        "acquired_at": "2024-01-12T05:53:38.695000Z",
+        "file_sha256": "90cd133a28d9ccca2bf4ea50521fe19d94e60bdc95f852b5f5757cb77fa529a8"
+      },
+      {
+        "id": "S2A_43QBB_20240206_0_L2A",
+        "acquired_at": "2024-02-06T05:53:36.746000Z",
+        "file_sha256": "3fc520a6684461694fd6776cb5e77de6c3bed883aea96db48d0b83fd0e461a8f"
+      },
+      {
+        "id": "S2A_43QBB_20240317_0_L2A",
+        "acquired_at": "2024-03-17T05:53:41.186000Z",
+        "file_sha256": "925b2e7c59f1c38a38311be16136284a8288035c3e30e3dee0b130395090deba"
+      },
+      {
+        "id": "S2A_43QBB_20240416_0_L2A",
+        "acquired_at": "2024-04-16T05:53:43.641000Z",
+        "file_sha256": "276492e0f70eae160ecac9a369b667f15bfe768ae06f526b7706d3dd2116d1e1"
+      },
+      {
+        "id": "S2A_43QBB_20240516_0_L2A",
+        "acquired_at": "2024-05-16T05:53:43.433000Z",
+        "file_sha256": "7b82a564e96afe2f08eda0274af1063c3d73e3af8413ddd77e03e1dade253b34"
+      },
+      {
+        "id": "S2B_43QBB_20241028_0_L2A",
+        "acquired_at": "2024-10-28T05:53:41.614000Z",
+        "file_sha256": "00f52b206b9d905247ec2d6fae9d1cc52ef649022a59e4db3f2ab6a6fcaa020c"
+      },
+      {
+        "id": "S2B_43QBB_20241107_0_L2A",
+        "acquired_at": "2024-11-07T05:53:34.100000Z",
+        "file_sha256": "16451fec7c19a86346c3939c92aadc01caf511f132f6aaf8f47e2e4b9cf8be38"
+      },
+      {
+        "id": "S2B_43QBB_20241217_0_L2A",
+        "acquired_at": "2024-12-17T05:53:41.840000Z",
+        "file_sha256": "2d367363578ab451cec4b997e20dfae05f5235df9e7734e977544efb91e5ce05"
+      },
+      {
+        "id": "S2B_43QBB_20250106_0_L2A",
+        "acquired_at": "2025-01-06T05:53:41.120000Z",
+        "file_sha256": "adaa1dd89f284b17d5a8beddf509dc16c8481a20d2a0f455d48cca50545d7b19"
+      },
+      {
+        "id": "S2B_43QBB_20250406_0_L2A",
+        "acquired_at": "2025-04-06T05:53:41.361000Z",
+        "file_sha256": "11fb2dc08eed3bcfdd5ed2e78880656dc680446fbfd29832dc6fefb91c1cf79d"
+      },
+      {
+        "id": "S2B_43QBB_20251013_0_L2A",
+        "acquired_at": "2025-10-13T05:53:41.568000Z",
+        "file_sha256": "0a3db766450c652b7c1f8e722ca329b3a1a4ef1aa0e8c1526332c23e1148adc4"
+      },
+      {
+        "id": "S2C_43QBB_20251127_0_L2A",
+        "acquired_at": "2025-11-27T05:53:50.006000Z",
+        "file_sha256": "d830fab50239e78158abfd434972f38af56082fb1fb6db1a7deb7976146a4d34"
+      },
+      {
+        "id": "S2B_43QBB_20251212_0_L2A",
+        "acquired_at": "2025-12-12T05:53:38.592000Z",
+        "file_sha256": "a9549c18ed14c3417a6842683723b97d53cbb7f8a89dd78483c22143d390672e"
+      },
+      {
+        "id": "S2C_43QBB_20260116_0_L2A",
+        "acquired_at": "2026-01-16T05:53:41.537000Z",
+        "file_sha256": "196ef80b61170da30ec460abf095ed543027b8d1dee3400f2386766a71e6e80d"
+      },
+      {
+        "id": "S2C_43QBB_20260225_0_L2A",
+        "acquired_at": "2026-02-25T05:53:42.488000Z",
+        "file_sha256": "cfef6a1f0016e1c4d946350f317a8f4782557d07992aac67128ea234282dfbca"
+      },
+      {
+        "id": "S2B_43QBB_20260312_0_L2A",
+        "acquired_at": "2026-03-12T05:53:38.427000Z",
+        "file_sha256": "19e094cec769621384cca1ab041944f34fec6dcbca05f574537c23818a48970a"
+      },
+      {
+        "id": "S2B_43QBB_20260411_0_L2A",
+        "acquired_at": "2026-04-11T05:53:39.056000Z",
+        "file_sha256": "f579d081796292065c9344755183aa1bfab36cdf768041a3fe037500d22142fa"
+      },
+      {
+        "id": "S2B_43QBB_20260511_0_L2A",
+        "acquired_at": "2026-05-11T05:53:37.581000Z",
+        "file_sha256": "d59995ef3ea145c97ea981e3d77a4a432ed7f39632ff249aa420c49ccc100df1"
+      },
+      {
+        "id": "S2C_43QBB_20261003_0_L2A",
+        "acquired_at": "2026-10-03T05:53:42.249000Z",
+        "file_sha256": "e50a4bdb10a0505044fe83297787c5446ddfdb68ee3bdc938e5668682f06b8f6"
+      }
+    ]
+  },
+  "splits": {
+    "development": {
+      "status": "USED",
+      "note": "All 63 demo-01 scenes were seen during development, threshold design and demos."
+    },
+    "evaluation": {
+      "status": "INTERNAL — NOT HELD-OUT",
+      "note": "The items below are evaluated on the same 63 scenes; any metric is an internal (development-set) measurement, not a held-out result."
+    },
+    "held-out": {
+      "status": "PENDING",
+      "note": "No unseen labelled imagery exists yet (organiser data or a new AOI ingested with ingest-local, labelled by analysts who did not tune Lumon)."
+    }
+  },
+  "semantic": {
+    "k_values": [
+      5,
+      10
+    ],
+    "queries": [
+      {
+        "id": "q-runway",
+        "text": "airport runway",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": null,
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "q-river",
+        "text": "river",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": null,
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "q-bare-soil",
+        "text": "bare soil construction site",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": null,
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "q-new-structures-river",
+        "text": "newly built structures near a river",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": "RemoteCLIP ranks single chips by appearance only: it has no notion of 'newly built' (time) or 'near a river' (spatial relation)",
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "q-road-development",
+        "text": "road development",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": "RemoteCLIP sees one date per chip: 'development' over time is not modelled",
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "q-vehicles",
+        "text": "large vehicle concentrations on open ground",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "capability_note": "vehicles are a few metres long, below Sentinel-2's 10 m pixels: ranks cannot reflect vehicles",
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      }
+    ]
+  },
+  "similarity": {
+    "references": [
+      {
+        "id": "s-runway-other-places",
+        "chip_id": "S2B_43QBB_20251013_0_L2A:224:232:262",
+        "scope": "other-places",
+        "split": "evaluation",
+        "k_values": [
+          5
+        ],
+        "pool_depth": 10,
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      },
+      {
+        "id": "s-creek-other-places",
+        "chip_id": "S2A_43QBB_20181214_0_L2A:112:0:187",
+        "scope": "other-places",
+        "split": "evaluation",
+        "k_values": [
+          5,
+          10
+        ],
+        "pool_depth": 20,
+        "relevance": {
+          "status": "pending",
+          "source": null,
+          "exhaustive": false,
+          "judgements": {}
+        }
+      }
+    ]
+  },
+  "rule_change": {
+    "label_schema": {
+      "id": "unique id",
+      "split": "development | evaluation | held-out",
+      "aoi_id": "AOI",
+      "before_scene_id": "scene",
+      "after_scene_id": "scene",
+      "tile_ids": [
+        "demo-01:row:col"
+      ],
+      "change": "true | false",
+      "change_class": "construction | clearance | water-extent | road-development | other | null",
+      "direction": "appearance | disappearance | expansion | contraction | null",
+      "known_change_date": "YYYY-MM-DD or null",
+      "source": "who labelled it and how",
+      "status": "verified | pending"
+    },
+    "labels": []
+  },
+  "btc_b": {
+    "pairs": [
+      {
+        "id": "b-20180103-20260116",
+        "split": "evaluation",
+        "before_scene_id": "S2B_43QBB_20180103_3_L2A",
+        "after_scene_id": "S2C_43QBB_20260116_0_L2A",
+        "label": {
+          "status": "pending",
+          "source": null,
+          "mask_path": null,
+          "mask_sha256": null
+        }
+      },
+      {
+        "id": "b-20181025-20261003",
+        "split": "evaluation",
+        "before_scene_id": "S2A_43QBB_20181025_1_L2A",
+        "after_scene_id": "S2C_43QBB_20261003_0_L2A",
+        "label": {
+          "status": "pending",
+          "source": null,
+          "mask_path": null,
+          "mask_sha256": null
+        }
+      },
+      {
+        "id": "b-20230122-20240112",
+        "split": "evaluation",
+        "before_scene_id": "S2A_43QBB_20230122_0_L2A",
+        "after_scene_id": "S2B_43QBB_20240112_1_L2A",
+        "label": {
+          "status": "pending",
+          "source": null,
+          "mask_path": null,
+          "mask_sha256": null
+        }
+      },
+      {
+        "id": "b-20230512-20231009",
+        "split": "evaluation",
+        "before_scene_id": "S2A_43QBB_20230512_0_L2A",
+        "after_scene_id": "S2A_43QBB_20231009_0_L2A",
+        "label": {
+          "status": "pending",
+          "source": null,
+          "mask_path": null,
+          "mask_sha256": null
+        }
+      },
+      {
+        "id": "b-20260116-20260225",
+        "split": "evaluation",
+        "before_scene_id": "S2C_43QBB_20260116_0_L2A",
+        "after_scene_id": "S2C_43QBB_20260225_0_L2A",
+        "label": {
+          "status": "pending",
+          "source": null,
+          "mask_path": null,
+          "mask_sha256": null
+        }
+      }
+    ]
+  },
+  "discovery": {
+    "incremental_check": {
+      "holdout_from": "2026-01-01"
+    }
+  },
+  "known_limitations": [
+    "One 22 km² AOI; no held-out data.",
+    "No human labels: every accuracy-type metric is NOT AVAILABLE until analysts fill the label slots.",
+    "Pending queries list a judgement pool (top-20 chips) in the report for analysts to label."
+  ],
+  "content_sha256": "7bfa08224436375561a88074ad7bbfaf14023d22b57e7ca3a049a4b27d42adb5",
+  "changelog": {
+    "1.1.0": "BTC-B pair ids made readable (date of each scene). No dataset, query or label change.",
+    "1.0.0": "Initial manifest: 63 demo-01 scenes, 6 queries, 2 similarity references, 5 BTC-B pairs, all labels pending."
+  }
+}

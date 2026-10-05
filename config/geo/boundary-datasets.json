@@ -1,0 +1,77 @@
+{
+  "_comment": "Boundary and reference geography datasets for the India operating area. The staging command (python -m lumon.cli stage-boundaries) downloads each one, records a checksum and writes a simplified copy to data/boundaries/. Nothing here is described as 'official' unless the publisher says so.",
+  "datasets": [
+    {
+      "id": "india-land",
+      "name": "India (country polygon, India point of view)",
+      "provider": "Natural Earth",
+      "dataset": "ne_10m_admin_0_countries_ind (Admin 0 Countries, point-of-view: India)",
+      "url": "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_countries_ind.zip",
+      "format": "shapefile-zip",
+      "filter": {"field": "ADM0_A3", "equals": "IND"},
+      "keep_properties": {"NAME": "name"},
+      "license": "Public domain (Natural Earth terms of use)",
+      "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "attribution": "Made with Natural Earth",
+      "notes": "Natural Earth publishes country boundaries as seen by several countries' official points of view. This file is the India point-of-view edition. It is a small-scale (1:10m) cartographic dataset, not a survey-grade or legally authoritative boundary.",
+      "simplify_tolerance_deg": 0.005
+    },
+    {
+      "id": "india-eez",
+      "name": "India Exclusive Economic Zone (200 NM)",
+      "provider": "Flanders Marine Institute (VLIZ) - Marine Regions",
+      "dataset": "Maritime Boundaries Geodatabase: Exclusive Economic Zones (MarineRegions:eez), features with iso_sov1 = IND",
+      "url": "https://geo.vliz.be/geoserver/MarineRegions/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=MarineRegions:eez&outputFormat=application/json&cql_filter=iso_sov1='IND'",
+      "format": "geojson",
+      "keep_properties": {"geoname": "name", "mrgid": "mrgid", "pol_type": "type"},
+      "license": "CC BY 4.0",
+      "license_url": "https://www.marineregions.org/disclaimer.php",
+      "attribution": "Flanders Marine Institute (2023). Maritime Boundaries Geodatabase. Available online at https://www.marineregions.org/",
+      "notes": "Marine Regions states the data has no legal value and expresses no opinion on the legal status of any boundary. Marine Regions asks users not to redistribute their files, so the downloaded copy stays in data/ and is never committed.",
+      "simplify_tolerance_deg": 0.01
+    },
+    {
+      "id": "india-states",
+      "name": "India states and union territories",
+      "provider": "geoBoundaries (William & Mary geoLab), from DataMeet India community / Election Commission of India",
+      "dataset": "geoBoundaries gbOpen IND ADM1 (boundaryID IND-ADM1-1811400, year represented 2011), simplified edition",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM1/geoBoundaries-IND-ADM1_simplified.geojson",
+      "format": "geojson",
+      "keep_properties": {"shapeName": "name", "shapeID": "shape_id"},
+      "license": "CC BY 2.5 IN",
+      "license_url": "https://github.com/datameet/maps",
+      "attribution": "geoBoundaries (Runfola et al. 2020); DataMeet India community",
+      "notes": "geoBoundaries metadata gives 2011 as the year represented, but the file (36 units) already contains Ladakh (UT since 2019) and the merged Dadra and Nagar Haveli and Daman and Diu (2020). Names include diacritics, e.g. Chhattīsgarh.",
+      "simplify_tolerance_deg": 0.004
+    },
+    {
+      "id": "india-districts",
+      "name": "India districts",
+      "provider": "geoBoundaries (William & Mary geoLab), from Pathways Data Pvt. Ltd. / lgdirectory.gov.in",
+      "dataset": "geoBoundaries gbOpen IND ADM2 (year represented 2021, 736 units), simplified edition",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/geoBoundaries-IND-ADM2_simplified.geojson",
+      "format": "geojson",
+      "keep_properties": {"shapeName": "name", "shapeID": "shape_id"},
+      "license": "ODbL 1.0",
+      "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "attribution": "geoBoundaries (Runfola et al. 2020); Pathways Data Pvt. Ltd.",
+      "notes": "District layout as of 2021. The published simplified file contains 735 features although the geoBoundaries metadata reports 736 units.",
+      "simplify_tolerance_deg": 0.003
+    },
+    {
+      "id": "india-places",
+      "name": "Populated places in India",
+      "provider": "Natural Earth",
+      "dataset": "ne_10m_populated_places_simple",
+      "url": "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_populated_places_simple.zip",
+      "format": "shapefile-zip",
+      "filter": {"field": "adm0_a3", "equals": "IND"},
+      "keep_properties": {"name": "name", "adm1name": "state", "pop_max": "population", "featurecla": "feature_class", "scalerank": "rank"},
+      "license": "Public domain (Natural Earth terms of use)",
+      "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "attribution": "Made with Natural Earth",
+      "notes": "Used for the geographic search gazetteer and major city labels.",
+      "simplify_tolerance_deg": 0
+    }
+  ]
+}
