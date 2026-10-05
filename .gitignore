@@ -29,3 +29,5 @@ __pycache__/
 # These are reproduced with the staging commands (see docs/ingestion.md)
 # and must never be committed.
 data/
+.vercel
+.env*

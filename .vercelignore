@@ -1,0 +1,12 @@
+/data/
+/server/
+/docs/
+/config/
+/scripts/
+/dist/
+/.venv/
+/node_modules/
+.env
+.env.local
+.env.*
+/.vercel/
