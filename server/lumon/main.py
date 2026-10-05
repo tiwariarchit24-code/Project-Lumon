@@ -17,6 +17,7 @@ What it does:
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import db, live_poll, settings, worker
@@ -40,6 +41,18 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Project Lumon API", version="0.1.0", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://project-lumon.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:5175",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 for module in (system, geo, osint, imagery, query, review, pilot, change_ml, discovery):
     app.include_router(module.router)

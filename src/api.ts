@@ -22,10 +22,12 @@ export class ApiError extends Error {
 }
 
 // Shared logic for GET and POST: send the request, turn failures into ApiError.
+const API_BASE = (import.meta.env.VITE_LUMON_API_URL || "").replace(/\/$/, "");
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(path, options);
+    response = await fetch(`${API_BASE}${path}`, options);
   } catch {
     // fetch only throws when no response arrived at all.
     throw new ApiError("Lumon API unreachable", 0, true);
